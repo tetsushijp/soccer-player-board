@@ -157,7 +157,7 @@ $(document).ready(function () {
 
     var field_padding = field_rect.height/10; // 描画開始時のpadding
     var icon_num = 6;
-    var icon_sz = (field_rect.height-field_padding*2) / icon_num / 1.2; //サッカー場の横幅に10人並ぶぐらいの大きさ 
+    var icon_sz = (field_rect.height-field_padding*2) / icon_num / 1.5; //サッカー場の横幅に10人並ぶぐらいの大きさ 
     g_icon_size = icon_sz;
     var members = [
             ,{x:600,y: 30,sz: icon_sz,img:"img/hito_red-tate.png",txt:"赤尾"}
@@ -180,7 +180,7 @@ $(document).ready(function () {
 
      var init_x = 50;//field_rect.width/2;
      var init_y = 0+field_padding;
-     var sz = icon_sz;
+     var sz = icon_sz+10;
      for(var i in members) { // console.log("i:"+i);
        AddInstance(members[i].img,members[i].txt,
         init_x + (Math.floor((i-1)/icon_num))*sz,
