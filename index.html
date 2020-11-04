@@ -81,7 +81,7 @@
           abcd
         </canvas>
         <label for="menu-check" class="menu">
-          <img src="img/setting.svg" width="40" height="40">
+          <img src="img/setting.svg" width="30" height="30">
         </label>
         <input type="checkbox" id="menu-check" class="menu" >
         <div class="setting"> 
@@ -155,9 +155,9 @@ $(document).ready(function () {
     var zidx = 100;
     g_can.on('mouse:over', function(e) { e.target.moveTo(zidx++); });//can.renderAll();
 
-    var field_padding = field_rect.height/8; // 描画開始時のpadding
-    var icon_num = 8;
-    var icon_sz = (field_rect.height-field_padding*2) / icon_num; //サッカー場の横幅に10人並ぶぐらいの大きさ 
+    var field_padding = field_rect.height/10; // 描画開始時のpadding
+    var icon_num = 6;
+    var icon_sz = (field_rect.height-field_padding*2) / icon_num / 1.2; //サッカー場の横幅に10人並ぶぐらいの大きさ 
     g_icon_size = icon_sz;
     var members = [
             ,{x:600,y: 30,sz: icon_sz,img:"img/hito_red-tate.png",txt:"赤尾"}
