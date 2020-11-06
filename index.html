@@ -1,240 +1,328 @@
-
 <!DOCTYPE html>
 <html>
-    <head>
-      <meta charset="UTF-8">
-        <title>Soccer Board Page</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script type="text/javascript" src="./js/jquery.js"></script>
-        <script src="./js/hammer.js"></script>
-        <script src="./js/fabric_with_gestures.js"></script>
-        <style>
-          body {
-            -webkit-text-size-adjust: 100%;
-            height: 100vh;
-          }
-          /* Safari用のハックは、Chromeに適用されないようにする */
-          @supports (-webkit-touch-callout: none) {
-            body {
-              /* Safari用のハック */
-              height: -webkit-fill-available;
-            }
-          }
-          .wrapper {
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            background:green;
-            /* padding: calc((100vh - 62vw) / 2) calc((62vw - 100vh) / 2);  */
-            /* 2400 x 1500 */
-            /* padding: calc((80vh - 100vw) / 2) calc((100vw - 80vh) / 2); */
-          }
-          .content {
-            width: 100%;
-            height: 100%;
-            background: rgb(31,100,23);
-            background-image:url(img/Soccer-Field-tate.png); background-repeat: no-repeat;
-            background-size: contain;
-            /* background-position: center; */
-          }
-          .menu {
-            position: absolute;
-            right: 5px;
-            top: 5px;
-            padding: 5px;
-          }
-          .setting {
-            position: absolute;
-            top:30px;
-            left:30px;
-            right:30px;
-            bottom: 30px;
-            background-color: rgb(232, 232, 232);
-            display: none;
-          }
-          #menu-check {
-            display:none;
-          }
+  <head>
+    <meta charset="UTF-8" />
+    <title>Soccer Board Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="text/javascript" src="./js/jquery.js"></script>
+    <script src="./js/hammer.js"></script>
+    <script src="./js/fabric_with_gestures.js"></script>
+    <style>
+      body {
+        -webkit-text-size-adjust: 100%;
+        height: 100vh;
+      }
+      /* Safari用のハックは、Chromeに適用されないようにする */
+      @supports (-webkit-touch-callout: none) {
+        body {
+          /* Safari用のハック */
+          height: -webkit-fill-available;
+        }
+      }
+      .wrapper {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: green;
+        /* padding: calc((100vh - 62vw) / 2) calc((62vw - 100vh) / 2);  */
+        /* 2400 x 1500 */
+        /* padding: calc((80vh - 100vw) / 2) calc((100vw - 80vh) / 2); */
+      }
+      .content {
+        width: 100%;
+        height: 100%;
+        background: rgb(31, 100, 23);
+        background-image: url(img/Soccer-Field-tate.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+        /* background-position: center; */
+      }
+      .menu {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        padding: 5px;
+      }
+      .setting {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        right: 25px;
+        bottom: 25px;
+        background-color: rgb(232, 232, 232);
+        display: none;
+        padding: 30px;
+      }
+      #menu-check {
+        display: none;
+      }
 
-          #menu-check:checked ~ .setting{
-            display: block;
-            animation: show 0.1s linear 0s;
-          }
-          @keyframes show{
-            from{
-                opacity: 0;
-            }
-            to{
-                opacity: 1;
-            }
-          }
-        </style>
-    </head>
-    <body ontouchmove="event.preventDefault()">
-        <div class="wrapper">
-          <div id="fld" class="content">
-          </div>
-        </div>  
-        <canvas id="c" width="1000" height="1000" style="position:absolute; left:0px; right:0px;">
-          abcd
-        </canvas>
-        <label for="menu-check" class="menu">
-          <img src="img/setting.svg" width="30" height="30">
-        </label>
-        <input type="checkbox" id="menu-check" class="menu" >
-        <div class="setting"> 
-          <div class="setting-title">設定</div>
-          <div class="tabs">
-            <div class="tab">
-              tab1
-            </div>
-            <div class="tab">
-              tab2
-            </div>
-          </div>
+      #menu-check:checked ~ .setting {
+        display: block;
+        animation: show 0.1s linear 0s;
+      }
+      @keyframes show {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body ontouchmove="event.preventDefault()">
+    <div class="wrapper">
+      <div id="fld" class="content"></div>
+    </div>
+    <canvas
+      id="c"
+      width="1000"
+      height="1000"
+      style="position: absolute; left: 0px; right: 0px"
+    >
+    </canvas>
+    <label for="menu-check" class="menu">
+      <img src="img/setting.svg" width="30" height="30" />
+    </label>
+    <div class="setting-panel">
+      <input type="checkbox" id="menu-check" class="menu" checked="checked" />
+      <div class="setting">
+        <div class="setting-title">設定</div>
+        <div class="tabs">
+          <div class="tab" id="member_list">メンバーリスト</div>
+          <button onclick="save();">SAVE</button>
+          <div class="tab">tab2</div>
         </div>
+      </div>
+    </div>
+  </body>
 
-      
-    </body>
+  <script>
+    // Drag OJBをFabric インスタンス化し配置する
+    function AddInstance(im, txt, x, y, size, name_updatable) {
+      var dragInstance;
+      fabric.Image.fromURL(im, function (img) {
+        // Imageの設定
+        img.scale(1).set({ width: size, height: size, originX: 100, angle: 0 });
+        // text追加
+        var text = new fabric.Text(txt, {
+          fontSize: g_icon_size / 3,
+          originX: 100,
+        });
+        //  var circle = new fabric.Circle({radius:100, fill:"#eef",scaleY:1.1})
 
-<script>
-// ドラッグして配置可能なオブジェクト
-var dragitms = [   {siz: 50,img:"img/ball_big.png"}
-                  ,{siz: 50,img:"img/Circle_Grey.png"}
-                  ,{siz: 50,img:"img/Circle_Orange.png"}
-                  ,{siz: 50,img:"img/Circle_Green.png"}
-                  ,{siz:100,img:"img/hito_red-tate.png"}
-                  ,{siz:100,img:"img/hito_blue.png"}
-                  ];
+        // これが実際に配置さえるオブジェクト
+        dragInstance = new fabric.Group([img, text], {
+          left: x - (size - 50) / 2,
+          top: y - (size - 50) / 2,
+          angle: 0,
+        });
+        dragInstance.setControlsVisibility({
+          mt: false,
+          mb: false,
+          ml: false,
+          mr: false,
+          bl: false,
+          br: false,
+          tl: false,
+          tr: false,
+          mtr: true,
+        });
+        dragInstance.hasBorders = false;
+        dragInstance.cornerSize = 25;
+        dragInstance.cornerColor = "#EEEEEE";
+        //    dragInstance.borderColor = '#FF0000';
+        dragInstance.enableRetinaScaling = true;
+        dragInstance.imageSmoothingEnabled = true;
+        //    g_can.add(img).setActiveObject(img);
+        g_can.add(dragInstance); // グローバル変数のキャンバスに配置する
+        g_instance = dragInstance; // just for debug
+        if (name_updatable) g_instance_array.push(dragInstance);
+      });
+    }
 
-// Drag OJBをFabric インスタンス化し配置する
-function AddInstance(im,txt,x,y,size) { 
-  fabric.Image.fromURL(im, function(img) {
-    // Imageの設定
-    img.scale(1).set({ width: size, height: size,originX:100, angle:0});
-    // text追加
-    var text = new fabric.Text(txt, {fontSize:g_icon_size/3,originX:100});
-    //  var circle = new fabric.Circle({radius:100, fill:"#eef",scaleY:1.1})
+    function drawPlayers() {
+      var savedMemberList = JSON.parse(localStorage.getItem("member-list"));
+      if (!savedMemberList) savedMemberList = new Array(20).fill("");
 
-    // これが実際に配置さえるオブジェクト
-    var dragInstance = new fabric.Group([img,text], {
-      left: x - ((size-50)/2),
-      top : y - ((size-50)/2), angle:0} );
-    dragInstance.setControlsVisibility({
-           mt: false, mb: false, ml: false, mr: false, 
-           bl: false, br: false, tl: false, tr: false,  mtr: true, 
-    });  
-    dragInstance.hasBorders = false;
-    dragInstance.cornerSize = 25;
-    dragInstance.cornerColor = '#FF0000';
-    //    dragInstance.borderColor = '#FF0000';
-    dragInstance.enableRetinaScaling = true;
-    dragInstance.imageSmoothingEnabled = true;
-    //    g_can.add(img).setActiveObject(img);
-    g_can.add(dragInstance);  // グローバル変数のキャンバスに配置する
+      var field_padding = field_rect.height / 10; // 描画開始時のpadding
+      var icon_num = 6;
+      var icon_sz = (field_rect.height - field_padding * 2) / icon_num / 1.5; //サッカー場の横幅に10人並ぶぐらいの大きさ
+      g_icon_size = icon_sz;
+      // var im = "img/ball_big.png";
+      // var text = "";
+      // AddInstance(im,text,150,150,50);
 
-  });
-}
-</script>
+      var init_x = 10; //field_rect.width/2;
+      var init_y = 15; // + field_padding;
+      var sz = icon_sz + 10;
+      var memImg = "img/hito_red-tate.png";
+      //      for (var i in members) {
+      for (var i in savedMemberList) {
+        console.log(
+          "i:" +
+            i +
+            " savedMemberL:" +
+            savedMemberList[i] +
+            " " +
+            g_member_drawed[i]
+        );
+        if (g_member_drawed[i]) {
+          // 選手名があれば上書き、なければ削除
+          if (savedMemberList[i]) {
+            // 文字を上書き
+            g_instance_array[i].item(1).set({ text: savedMemberList[i] });
+            g_can.renderAll();
+          } else {
+            g_can.remove(g_instance_array[i]);
+          }
+        }
 
-<script>
-// ############# ここが最初に呼ばれる ############## //
-var g_can,g_icon_size;
+        if (!g_member_drawed[i] && savedMemberList[i]) {
+          var inst = AddInstance(
+            memImg,
+            savedMemberList[i],
+            init_x + i * sz - Math.floor(i / icon_num) * icon_num * sz,
+            init_y + Math.floor(i / icon_num) * sz,
+            icon_sz,
+            true
+          );
+          //console.log(inst);
+          //g_instance_array.push(1);
+          g_member_drawed[i] = true;
+        } else continue;
+        //  AddInstance(members[i].img,members[i].txt,members[i].x,members[i].y,members[i].sz);
+      } // end for
+      if (!g_ball_drawed) {
+        AddInstance("img/ball_big.png", "", 200, 200, icon_sz / 2, false);
+        g_ball_drawed = true;
+      }
+    }
+    function save() {
+      console.log("save");
+      console.log("length:" + $("#member_list").find(".player-name").length);
+      var len = $("#member_list").find(".player-name").length;
+      g_member_array = new Array(); // 初期化
+      for (var i = 0; i < len; i++) {
+        var player_name = $("#member_list").find(".player-name")[i].value;
+        console.log("player-name:" + player_name);
+        g_member_array.push(player_name);
+      }
+      localStorage.setItem("member-list", JSON.stringify(g_member_array));
 
-$(document).ready(function () {
-    // var field_rect = document.querySelector("#fld").getBoundingClientRect()
-    // $('#c').get(0).width=field_rect.width; //  1100;//$(window).width()-150;
-    // $('#c').get(0).height=field_rect.height; // 700;//$(window).height()-30;
-    var field_rect = document.querySelector("body").getBoundingClientRect();
-    $('#c').get(0).width=field_rect.width; //  1100;//$(window).width()-150;
-    $('#c').get(0).height=field_rect.height; // 700;//$(window).height()-30;
+      console.log("----- getItem --- ");
+      console.log(JSON.parse(localStorage.getItem("member-list")));
+      $("#menu-check").removeAttr("checked").prop("checked", false).change();
+      drawPlayers();
+    }
+    function showMemberListForm() {
+      //      var ml = document.getElementById("member_list");
+      //      var addButton = $(document.createElement("button")).attr(
+      //        "id",
+      //        "addbutton"
+      //      );
+      //      addButton.on("click", function () {
+      //        console.log("click");
+      //      });
+      //      addButton.after().html("add");
+      //      addButton.appendTo("#member_list");
+      var savedMemberList = JSON.parse(localStorage.getItem("member-list"));
+      if (!savedMemberList) savedMemberList = new Array(20).fill("");
 
-    g_can = new fabric.Canvas('c');
-    var zidx = 100;
-    g_can.on('mouse:over', function(e) { e.target.moveTo(zidx++); });//can.renderAll();
+      for (var counter = 1; counter <= 20; counter++) {
+        var newTextBoxDiv = $(document.createElement("div")).attr(
+          "id",
+          "TextBoxDiv" + counter
+        );
 
-    var field_padding = field_rect.height/10; // 描画開始時のpadding
-    var icon_num = 6;
-    var icon_sz = (field_rect.height-field_padding*2) / icon_num / 1.5; //サッカー場の横幅に10人並ぶぐらいの大きさ 
-    g_icon_size = icon_sz;
-    var members = [
-            ,{x:600,y: 30,sz: icon_sz,img:"img/hito_red-tate.png",txt:"赤尾"}
-            ,{x:700,y: 30,sz: icon_sz,img:"img/hito_red-tate.png",txt:"阿部た"}
-            ,{x:800,y: 30,sz: icon_sz,img:"img/hito_red-tate.png",txt:"大迫そ"}
-            ,{x:600,y:110,sz: icon_sz,img:"img/hito_red-tate.png",txt:"櫛笥"}
-            ,{x:700,y:110,sz: icon_sz,img:"img/hito_red-tate.png",txt:"出口よ"}
-            ,{x:600,y:190,sz: icon_sz,img:"img/hito_red-tate.png",txt:"西出い"}
-            ,{x:600,y: 30,sz: icon_sz,img:"img/hito_red-tate.png",txt:"赤尾"}
-            ,{x:700,y: 30,sz: icon_sz,img:"img/hito_red-tate.png",txt:"阿部た"}
-            ,{x:800,y: 30,sz: icon_sz,img:"img/hito_red-tate.png",txt:"大迫そ"}
-            ,{x:600,y:110,sz: icon_sz,img:"img/hito_red-tate.png",txt:"櫛笥"}
-            ,{x:700,y:110,sz: icon_sz,img:"img/hito_red-tate.png",txt:"出口よ"}
-            ,{x:600,y:190,sz: icon_sz,img:"img/hito_red-tate.png",txt:"西出い"}
-            ,{x:150,y:170,sz: icon_sz/2,img:"img/ball_big.png",txt:""}
-                  ];
-     // var im = "img/ball_big.png";
-     // var text = "";
-     // AddInstance(im,text,150,150,50);
+        newTextBoxDiv
+          .after()
+          .html(
+            "<label>選手" +
+              counter +
+              " : </label>" +
+              '<input type="text" class="player-name" name="textbox' +
+              counter +
+              '" id="textbox' +
+              counter +
+              '" value="' +
+              savedMemberList[counter - 1] +
+              '" >'
+          );
 
-     var init_x = 50;//field_rect.width/2;
-     var init_y = 0+field_padding;
-     var sz = icon_sz+10;
-     for(var i in members) { // console.log("i:"+i);
-       AddInstance(members[i].img,members[i].txt,
-        init_x + (Math.floor((i-1)/icon_num))*sz,
-        init_y + (i-1)*sz - (Math.floor((i-1)/icon_num)*icon_num*sz)  ,members[i].sz);
-      //  AddInstance(members[i].img,members[i].txt,members[i].x,members[i].y,members[i].sz);
-     }
+        newTextBoxDiv.appendTo("#member_list");
+      }
+    }
+  </script>
 
+  <script>
+    // ############# ここが最初に呼ばれる ############## //
+    // g_instance.item(1).set({text:'hello'});
+    var g_can, g_icon_size, g_instance;
+    var g_instance_array = new Array();
+    var g_member_array = new Array();
+    var g_member_drawed = new Array(20).fill(false);
+    var g_ball_drawed = false;
+    var field_rect;
 
+    $(document).ready(function () {
+      showMemberListForm();
 
+      // var field_rect = document.querySelector("#fld").getBoundingClientRect()
+      // $('#c').get(0).width=field_rect.width; //  1100;//$(window).width()-150;
+      // $('#c').get(0).height=field_rect.height; // 700;//$(window).height()-30;
+      field_rect = document.querySelector("body").getBoundingClientRect();
+      $("#c").get(0).width = field_rect.width; //  1100;//$(window).width()-150;
+      $("#c").get(0).height = field_rect.height; // 700;//$(window).height()-30;
 
-     $(window).resize(function (){
+      g_can = new fabric.Canvas("c");
+      var zidx = 100;
+      g_can.on("mouse:over", function (e) {
+        e.target.moveTo(zidx++);
+      }); //can.renderAll();
+
+      //drawPlayers();
+
+      $(window).resize(function () {
         // console.log(" window resize Fld Ht:"+$("#fld").height());
         // console.log(" window resize CAN Ht:"+g_can.height);
 
-//        if (g_can.height != $("#fld").height()) {
-        if (true) { 
-                    var scaleMultiplier = $("#fld").height() / g_can.height;
-                    var objects = g_can.getObjects();
-                    for (var i in objects) {
-                        objects[i].scaleX = objects[i].scaleX * scaleMultiplier;
-                        objects[i].scaleY = objects[i].scaleY * scaleMultiplier;
-                        objects[i].left = objects[i].left * scaleMultiplier;
-                        objects[i].top = objects[i].top * scaleMultiplier;
-                        objects[i].setCoords();
-                    }
+        //        if (g_can.height != $("#fld").height()) {
+        if (true) {
+          var scaleMultiplier = $("#fld").height() / g_can.height; // TODO:調整
+          var objects = g_can.getObjects();
+          for (var i in objects) {
+            objects[i].scaleX = objects[i].scaleX * scaleMultiplier;
+            objects[i].scaleY = objects[i].scaleY * scaleMultiplier;
+            objects[i].left = objects[i].left * scaleMultiplier;
+            objects[i].top = objects[i].top * scaleMultiplier;
+            objects[i].setCoords();
+          }
 
-                    g_can.setWidth(g_can.getWidth() * scaleMultiplier);
-                    g_can.setHeight(g_can.getHeight() * scaleMultiplier);
-                    g_can.renderAll();
-                    g_can.calcOffset();
+          g_can.setWidth(g_can.getWidth() * scaleMultiplier);
+          g_can.setHeight(g_can.getHeight() * scaleMultiplier);
+          g_can.renderAll();
+          g_can.calcOffset();
 
-                    // canvasサイズもリサイズ
-//                    var field_rect = document.querySelector("body").getBoundingClientRect();
-                    // console.log("body w:"+field_rect.width);
-                    // $('#c').get(0).width=field_rect.width; //  1100;//$(window).width()-150;
-                    // $('.upper-canvas').get(0).width=field_rect.width;
-                    // $('#c').get(0).height=field_rect.height; // 700;//$(window).height()-30;
-                    // $('.upper-canvas').get(0).width=field_rect.width;
+          // canvasサイズもリサイズ
+          //                    var field_rect = document.querySelector("body").getBoundingClientRect();
+          // console.log("body w:"+field_rect.width);
+          // $('#c').get(0).width=field_rect.width; //  1100;//$(window).width()-150;
+          // $('.upper-canvas').get(0).width=field_rect.width;
+          // $('#c').get(0).height=field_rect.height; // 700;//$(window).height()-30;
+          // $('.upper-canvas').get(0).width=field_rect.width;
         }
       });
-
-
-
-});
-// TODO:
-// ----------------------------------------------------------------------------
-// Dragエリアは廃止して、あらかじめ人の名前が入った人が配置sれているモード作っておく。
-// 文字をいれられるように
-// 状態を保存できるように
-// コートを最大限広くして、部品を右側に持ってくる
-// 
-
-
-
-</script>
-
+    });
+    // TODO:
+    // ----------------------------------------------------------------------------
+    // Dragエリアは廃止して、あらかじめ人の名前が入った人が配置sれているモード作っておく。
+    // 文字をいれられるように
+    // 状態を保存できるように
+    // コートを最大限広くして、部品を右側に持ってくる
+    //
+  </script>
 </html>
