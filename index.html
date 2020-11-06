@@ -105,7 +105,7 @@
 
   <script>
     // Drag OJBをFabric インスタンス化し配置する
-    function AddInstance(im, txt, x, y, size, name_updatable) {
+    function AddInstance(im, txt, x, y, size, name_updatable,idx) {
       var dragInstance;
       fabric.Image.fromURL(im, function (img) {
         // Imageの設定
@@ -142,8 +142,9 @@
         dragInstance.imageSmoothingEnabled = true;
         //    g_can.add(img).setActiveObject(img);
         g_can.add(dragInstance); // グローバル変数のキャンバスに配置する
+        g_can.renderAll();
         g_instance = dragInstance; // just for debug
-        if (name_updatable) g_instance_array.push(dragInstance);
+        if (name_updatable) {g_instance_array[idx]=(dragInstance);console.log("refresh_ins_arr:");console.log(dragInstance.item(1));}
       });
     }
 
@@ -155,9 +156,6 @@
       var icon_num = 6;
       var icon_sz = (field_rect.height - field_padding * 2) / icon_num / 1.5; //サッカー場の横幅に10人並ぶぐらいの大きさ
       g_icon_size = icon_sz;
-      // var im = "img/ball_big.png";
-      // var text = "";
-      // AddInstance(im,text,150,150,50);
 
       var init_x = 10; //field_rect.width/2;
       var init_y = 15; // + field_padding;
@@ -177,21 +175,26 @@
           // 選手名があれば上書き、なければ削除
           if (savedMemberList[i]) {
             // 文字を上書き
+            console.log("instance i:"+i+" name:"+savedMemberList[i]);
             g_instance_array[i].item(1).set({ text: savedMemberList[i] });
             g_can.renderAll();
           } else {
             g_can.remove(g_instance_array[i]);
+            g_member_drawed[i] = false;
+            continue;
           }
         }
-
+        // まだ描画されてないメンバーの場合
         if (!g_member_drawed[i] && savedMemberList[i]) {
+          console.log("描画addIns:"+savedMemberList[i]);
           var inst = AddInstance(
             memImg,
             savedMemberList[i],
             init_x + i * sz - Math.floor(i / icon_num) * icon_num * sz,
             init_y + Math.floor(i / icon_num) * sz,
             icon_sz,
-            true
+            true,
+            i
           );
           //console.log(inst);
           //g_instance_array.push(1);
@@ -200,7 +203,7 @@
         //  AddInstance(members[i].img,members[i].txt,members[i].x,members[i].y,members[i].sz);
       } // end for
       if (!g_ball_drawed) {
-        AddInstance("img/ball_big.png", "", 200, 200, icon_sz / 2, false);
+        AddInstance("img/ball_big.png", "", 200, 200, icon_sz / 2, false,21);
         g_ball_drawed = true;
       }
     }
@@ -262,7 +265,7 @@
     // ############# ここが最初に呼ばれる ############## //
     // g_instance.item(1).set({text:'hello'});
     var g_can, g_icon_size, g_instance;
-    var g_instance_array = new Array();
+    var g_instance_array = new Array(21); // 20 + 1 ２１はボールよう
     var g_member_array = new Array();
     var g_member_drawed = new Array(20).fill(false);
     var g_ball_drawed = false;
