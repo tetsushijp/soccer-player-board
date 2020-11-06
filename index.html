@@ -232,7 +232,7 @@
       var savedMemberList = JSON.parse(localStorage.getItem("member-list"));
       if (!savedMemberList) savedMemberList = new Array(20).fill("");
 
-      for (var counter = 1; counter <= 20; counter++) {
+      for (var counter = 1; counter <= 10; counter++) {
         var newTextBoxDiv = $(document.createElement("div")).attr(
           "id",
           "TextBoxDiv" + counter
@@ -241,10 +241,7 @@
         newTextBoxDiv
           .after()
           .html(
-            "<label>選手" +
-              counter +
-              " : </label>" +
-              '<input type="text" class="player-name" name="textbox' +
+            '<input type="text" class="player-name" name="textbox' +
               counter +
               '" id="textbox' +
               counter +
