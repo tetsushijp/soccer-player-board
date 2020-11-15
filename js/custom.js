@@ -128,16 +128,6 @@ var cursorFocus = function(elem) {
 }
 
 function showMemberListForm() {
-  //      var ml = document.getElementById("member_list");
-  //      var addButton = $(document.createElement("button")).attr(
-  //        "id",
-  //        "addbutton"
-  //      );
-  //      addButton.on("click", function () {
-  //        console.log("click");
-  //      });
-  //      addButton.after().html("add");
-  //      addButton.appendTo("#member_list");
   var savedMemberList = JSON.parse(localStorage.getItem("member-list"));
   if (!savedMemberList) savedMemberList = new Array(20).fill("");
 
@@ -150,7 +140,7 @@ function showMemberListForm() {
     newTextBoxDiv
       .after()
       .html(
-        '<input type="text" class="player-name" name="textbox' +
+        counter+'.<input type="text" class="player-name" name="textbox' +
           counter +
           '" id="textbox' +
           counter +
