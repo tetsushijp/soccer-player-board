@@ -48,8 +48,8 @@ function drawPlayers() {
   if (!savedMemberList) savedMemberList = new Array(20).fill("");
 
   var field_padding = window.innerHeight/10;// field_rect.height / 10; // 描画開始時のpadding
-  var icon_num = 6;
-  var icon_sz = (window.innerHeight - field_padding * 2) / icon_num / 1.5; //サッカー場の横幅に10人並ぶぐらいの大きさ
+  var icon_num = 5;
+  var icon_sz = (window.innerWidth - field_padding * 2) / icon_num; //サッカー場の横幅に10人並ぶぐらいの大きさ
   g_icon_size = icon_sz;
   console.log("SSS -- Icon Size (x,y):"+icon_sz);
 
