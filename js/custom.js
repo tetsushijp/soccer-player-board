@@ -140,7 +140,7 @@ function showMemberListForm() {
     newTextBoxDiv
       .after()
       .html(
-        counter+'.<input type="text" class="player-name" name="textbox' +
+        ( '00' + counter ).slice( -2 )+'.<input type="text" class="player-name" name="textbox' +
           counter +
           '" id="textbox' +
           counter +
