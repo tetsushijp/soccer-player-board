@@ -47,15 +47,16 @@ function drawPlayers() {
   var savedMemberList = JSON.parse(localStorage.getItem("member-list"));
   if (!savedMemberList) savedMemberList = new Array(20).fill("");
 
-  var field_padding = window.innerHeight/10;// field_rect.height / 10; // 描画開始時のpadding
+  var field_padding = window.innerWidth/10;// field_rect.height / 10; // 描画開始時のpadding
   var icon_num = 5;
-  var icon_sz = (window.innerWidth - field_padding * 2) / icon_num; //サッカー場の横幅に10人並ぶぐらいの大きさ
+  var icon_sz = Math.floor((window.innerWidth - field_padding * 2) / (icon_num+1)); //サッカー場の横幅に10人並ぶぐらいの大きさ
   g_icon_size = icon_sz;
   console.log("SSS -- Icon Size (x,y):"+icon_sz);
 
   var init_x = 10; //field_rect.width/2;
   var init_y = 15; // + field_padding;
   var sz = icon_sz + 10;
+  var sz_y = icon_sz*2/3+5;
   var memImg = "img/hito_red-tate.png";
   //      for (var i in members) {
   for (var i in savedMemberList) {
@@ -87,7 +88,7 @@ function drawPlayers() {
         memImg,
         savedMemberList[i],
         init_x + i * sz - Math.floor(i / icon_num) * icon_num * sz,
-        init_y + Math.floor(i / icon_num) * sz,
+        init_y + Math.floor(i / icon_num) * sz_y,
         icon_sz,
         true,
         i
