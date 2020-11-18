@@ -7,7 +7,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0,user-scalable=no"
     />
-    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/custom.css" />
     <script type="text/javascript" src="./js/jquery.js"></script>
     <script src="./js/hammer.js"></script>
     <script src="./js/fabric_with_gestures.js"></script>
@@ -31,13 +31,32 @@
     <div class="setting-panel">
       <input type="checkbox" id="menu-check" class="menu" checked="checked" />
       <div class="setting">
-        <div class="setting-title">設定</div>
+        <h1 class="setting-title">試合</h1>
+        <input type="radio" name="gameNo" value="1" id="gno1" /><label
+          for="gno1"
+          >1試合目</label
+        >
+        <input type="radio" name="gameNo" value="2" id="gno2" /><label
+          for="gno2"
+          >2試合目</label
+        >
+        <input type="radio" name="gameNo" value="3" id="gno3" /><label
+          for="gno3"
+          >3試合目</label
+        >
+        <input type="radio" name="gameNo" value="4" id="gno4" /><label
+          for="gno4"
+          >4試合目</label
+        >
+
         <div class="tabs">
-          <button onclick="save();" style="padding: 10px 60px;"> OK </button>
-          <div class="tab" id="member_list">メンバーリスト</div>
+          <button id="OK-btn" onclick="save();" style="padding: 10px 60px">
+            OK
+          </button>
+          <h1>メンバーリスト</h1>
+          <div class="tab" id="member_list"></div>
         </div>
       </div>
     </div>
   </body>
-
 </html>

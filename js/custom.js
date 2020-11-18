@@ -39,7 +39,11 @@ function AddInstance(im, txt, x, y, size, name_updatable,idx) {
     g_can.add(dragInstance); // グローバル変数のキャンバスに配置する
     g_can.renderAll();
     g_instance = dragInstance; // just for debug
-    if (name_updatable) {g_instance_array[idx]=(dragInstance);console.log("refresh_ins_arr:");console.log(dragInstance.item(1));}
+    if (name_updatable) {
+      g_instance_array[idx]=(dragInstance);
+      // console.log("refresh_ins_arr:");
+      // console.log(dragInstance.item(1));
+    }
   });
 }
 
@@ -60,19 +64,19 @@ function drawPlayers() {
   var memImg = "img/hito_red-tate.png";
   //      for (var i in members) {
   for (var i in savedMemberList) {
-    console.log(
-      "i:" +
-        i +
-        " savedMemberL:" +
-        savedMemberList[i] +
-        " " +
-        g_member_drawed[i]
-    );
+    // console.log(
+    //   "i:" +
+    //     i +
+    //     " savedMemberL:" +
+    //     savedMemberList[i] +
+    //     " " +
+    //     g_member_drawed[i]
+    // );
     if (g_member_drawed[i]) {
       // 選手名があれば上書き、なければ削除
       if (savedMemberList[i]) {
         // 文字を上書き
-        console.log("instance i:"+i+" name:"+savedMemberList[i]);
+        // console.log("instance i:"+i+" name:"+savedMemberList[i]);
         g_instance_array[i].item(1).set({ text: savedMemberList[i] });
         g_can.renderAll();
       } else {
@@ -83,7 +87,7 @@ function drawPlayers() {
     }
     // まだ描画されてないメンバーの場合
     if (!g_member_drawed[i] && savedMemberList[i]) {
-      console.log("描画addIns:"+savedMemberList[i]);
+      console.log("初期描画 :"+savedMemberList[i]);
       var inst = AddInstance(
         memImg,
         savedMemberList[i],
@@ -104,17 +108,37 @@ function drawPlayers() {
     g_ball_drawed = true;
   }
 }
+var g_gameNoArr = new Array(4); // 初期化 ４試合分初期化
+function getGameNoPosition () {
+  var gameNo = $('input:radio[name="gameNo"]:checked').val();
+  console.log("試合番号:"+gameNo);
+  // 試合番号を記録する --> 実際は、ここで試合番号に対応するxyデータを取得
+  // とりあえずテストで書き込み
+  g_gameNoArr[gameNo] = g_member_array;
+  localStorage.setItem("gameNoWithXY", JSON.stringify(g_gameNoArr));
+}
+function savePlayerPosition() {
+  //g_instance_array[1].top / leftで値が取得できる
+  // g_instance_array[0].item(1).text でGroupのなかの1つめのitemのテキストを取得
+  // g_instance_array[0]の中身は、fabric jsのgroupingされたinstance
+  //  このgroupの中には、textとimageが入っている
+}
 function save() {
   console.log("save");
+  savePlayerPosition();
+
   console.log("length:" + $("#member_list").find(".player-name").length);
   var len = $("#member_list").find(".player-name").length;
   g_member_array = new Array(); // 初期化
   for (var i = 0; i < len; i++) {
     var player_name = $("#member_list").find(".player-name")[i].value;
-    console.log("player-name:" + player_name);
+    //console.log("player-name:" + player_name);
     g_member_array.push(player_name);
   }
   localStorage.setItem("member-list", JSON.stringify(g_member_array));
+
+  getGameNoPosition(); // 何試合目のデータを処理するか?
+
 
   console.log("----- getItem --- ");
   console.log(JSON.parse(localStorage.getItem("member-list")));
@@ -167,6 +191,8 @@ var g_member_drawed = new Array(20).fill(false);
 var g_ball_drawed = false;
 var field_rect;
 
+var g_targetOBJ;
+
 $(document).ready(function () {
   showMemberListForm();
 
@@ -182,6 +208,24 @@ $(document).ready(function () {
   g_can.on("mouse:over", function (e) {
     e.target.moveTo(zidx++);
   }); //can.renderAll();
+  g_can.on("mouse:up",function(e) { //ここでプレーヤの位置を保存
+    if( e.target ) {
+      console.log("mouse up:"+e.target);
+      console.log(e.target);
+      g_targetOBJ = e.target;
+
+      // 
+      for (var i in g_instance_array) {
+        var pname = g_instance_array[i].item(1).text;
+        var top = g_instance_array[i].top;
+        var left = g_instance_array[i].left;
+        console.log("i:"+i+" name:"+pname+"("+top+","+left+")");
+      }
+      var gameNo = $('input:radio[name="gameNo"]:checked').val();
+      console.log("試合番号:"+gameNo);
+      
+    }
+  });
 
   //drawPlayers();
 
