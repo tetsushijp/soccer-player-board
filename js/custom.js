@@ -110,13 +110,14 @@ function drawPlayers() {
 }
 var g_gameNoArr = new Array(4); // 初期化 ４試合分初期化
 function getGameNoPosition () {
-  var gameNo = $('input:radio[name="gameNo"]:checked').val();
-  console.log("試合番号:"+gameNo);
-  // 試合番号を記録する --> 実際は、ここで試合番号に対応するxyデータを取得
-  // とりあえずテストで書き込み
-  g_gameNoArr[gameNo] = g_member_array;
-  localStorage.setItem("gameNoWithXY", JSON.stringify(g_gameNoArr));
+  // var gameNo = $('input:radio[name="gameNo"]:checked').val();
+  // console.log("試合番号:"+gameNo);
+  // // 試合番号を記録する --> 実際は、ここで試合番号に対応するxyデータを取得
+  // // とりあえずテストで書き込み
+  // g_gameNoArr[gameNo] = g_member_array;
+  // localStorage.setItem("gameNoWithXY", JSON.stringify(g_gameNoArr));
 }
+//使ってない
 function savePlayerPosition() {
   //g_instance_array[1].top / leftで値が取得できる
   // g_instance_array[0].item(1).text でGroupのなかの1つめのitemのテキストを取得
@@ -137,14 +138,40 @@ function save() {
   }
   localStorage.setItem("member-list", JSON.stringify(g_member_array));
 
-  getGameNoPosition(); // 何試合目のデータを処理するか?
-
-
   console.log("----- getItem --- ");
   console.log(JSON.parse(localStorage.getItem("member-list")));
   $("#menu-check").removeAttr("checked").prop("checked", false).change();
   window.scrollTo(0, 0);
+
+  // g_gameNoArr[gameNo] = g_instance_array; // 今の状態を試合noに保存
+  // localStorage.setItem("playerArrayObj", JSON.stringify(g_gameNoArr));
+  // 保存されたArrayを取得
+
+  // もしも、保存されているプレイヤーの位置情報があれば、それを使って画面を描写する
+  // g_gameNoArr[gameNo] にg_instance_arryの中身が入っている。
+  var g_gameNoArr = JSON.parse(localStorage.getItem("playerArrayObj"));
+  var gameNo = $('input:radio[name="gameNo"]:checked').val();
+  if(g_gameNoArr[gameNo]) {
+    console.log(" *** data is exist....:#############:"+gameNo);
+    console.log(g_gameNoArr[gameNo]);
+//    console.log(g_gameNoArr[gameNo][0].item(1).text);
+    console.log(g_gameNoArr[gameNo][0].top);
+    for( l in g_gameNoArr[gameNo] ) {
+      if(g_member_drawed[l]) { // すでに一度canvasに描画されていれば
+        console.log(g_gameNoArr[gameNo][l]);
+        g_instance_array[l].set({top:250});
+        g_instance_array[l].set({
+          top:g_gameNoArr[gameNo][l].top,
+          left: g_gameNoArr[gameNo][l].left
+        });  
+      }
+    }
+    g_can.renderAll();
+  }
+
+  // playerの名前などを上書き
   drawPlayers();
+
 }
 var cursorFocus = function(elem) {
     var x = window.scrollX, y = window.scrollY;
@@ -223,7 +250,8 @@ $(document).ready(function () {
       }
       var gameNo = $('input:radio[name="gameNo"]:checked').val();
       console.log("試合番号:"+gameNo);
-      
+      g_gameNoArr[gameNo] = g_instance_array; // 今の状態を試合noに保存
+      localStorage.setItem("playerArrayObj", JSON.stringify(g_gameNoArr));
     }
   });
 
