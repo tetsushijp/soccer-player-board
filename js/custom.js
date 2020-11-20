@@ -57,7 +57,7 @@ function drawPlayers() {
     (window.innerWidth - field_padding * 2) / (icon_num + 1)
   ); //サッカー場の横幅に10人並ぶぐらいの大きさ
   g_icon_size = icon_sz;
-  console.log("SSS -- Icon Size (x,y):" + icon_sz);
+  // console.log("SSS -- Icon Size (x,y):" + icon_sz);
 
   var init_x = 10; //field_rect.width/2;
   var init_y = 15; // + field_padding;
@@ -82,7 +82,7 @@ function drawPlayers() {
     }
     // まだ描画されてないメンバーの場合
     if (!g_member_drawed[i] && savedMemberList[i]) {
-      console.log("初期描画 :" + savedMemberList[i]);
+      //      console.log("初期描画 :" + savedMemberList[i]);
       var inst_x = init_x + i * sz - Math.floor(i / icon_num) * icon_num * sz;
       var inst_y = init_y + Math.floor(i / icon_num) * sz_y;
       // もしも、保存されているプレイヤーの位置情報があれば、それを使って画面を描写する
@@ -120,7 +120,7 @@ function save() {
 
   // member_list配列を初期化して、フォーム入力された名前を入れる
   {
-    console.log("length:" + $("#member_list").find(".player-name").length);
+    // console.log("length:" + $("#member_list").find(".player-name").length);
     var len = $("#member_list").find(".player-name").length;
     g_member_array = new Array(); // 初期化
     for (var i = 0; i < len; i++) {
@@ -266,6 +266,14 @@ $(document).ready(function () {
       // $('.upper-canvas').get(0).width=field_rect.width;
     }
   });
+
+  // game noを押すとすぐに消える
+  $('input:radio[name="gameNo"]').on("click", function () {
+    // console.log("gameno change");
+    save();
+  });
+
+  // document ready end
 });
 // TODO:
 // ----------------------------------------------------------------------------
