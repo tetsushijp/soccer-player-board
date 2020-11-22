@@ -160,7 +160,7 @@ function showMemberListForm() {
   var savedMemberList = JSON.parse(localStorage.getItem("member-list"));
   if (!savedMemberList) savedMemberList = new Array(20).fill("");
 
-  for (var counter = 1; counter <= 10; counter++) {
+  for (var counter = 1; counter <= 16; counter++) {
     var newTextBoxDiv = $(document.createElement("div")).attr(
       "id",
       "TextBoxDiv" + counter
