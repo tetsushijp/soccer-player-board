@@ -1,3 +1,52 @@
+// TIPS 
+// browserのwebconsoleで、プレイヤーインスタンスを操作
+// g_instance_array[1].item(1).set({text:"HI"})
+// g_instance_array[1].item(1).textであたいを取得
+// g_instance_array[1].item(1).isPlay 試合にでているかどうかの判定
+// g_instance_array[1].top = 150
+// g_can.renderAll();
+
+// 試合に出ているかどうかの判定マトリクス
+// 
+
+// 試合に出ているかの判定
+function isPlayOrNot(plyr) {
+  var baseFieldH = 874;
+  var baseFieldStartH = 130;
+  var currFieldH = $(".content").outerHeight();
+  var currFieldStartH = currFieldH / baseFieldH * baseFieldStartH;
+  var top = plyr.top;
+  var isPlaying = top >= currFieldStartH;
+  return isPlaying;
+}
+
+
+var g_memberAttArr = new Array(25);
+function showPlayersAttendGameCount() {
+  // もしも、保存されているプレイヤーの位置情報があれば、それを使って画面を描写する
+  // g_gameNoArr[gameNo] にg_instance_arryの中身が入っている。
+  if (JSON.parse(localStorage.getItem("playerArrayObj"))) {
+    g_gameNoArr = JSON.parse(localStorage.getItem("playerArrayObj"));
+  }
+  // var gameNo = $('input:radio[name="gameNo"]:checked').val();
+
+  g_memberAttArr.fill(0);
+  for(var gameNo=1; gameNo<=8; gameNo ++ ) {
+    for(var playerNo=0; playerNo<10; playerNo++) {
+      if (g_gameNoArr[gameNo] && g_gameNoArr[gameNo][playerNo] ) {
+        //console.log("player TOP:"+ g_gameNoArr[gameNo][playerNo].top );
+        console.log(gameNo+","+playerNo+" isPlay:"+isPlayOrNot(g_gameNoArr[gameNo][playerNo]));
+        if( isPlayOrNot(g_gameNoArr[gameNo][playerNo]) ) {
+          g_memberAttArr[playerNo] = g_memberAttArr[playerNo] + 1;
+
+        }
+      }    
+    }
+  }
+  console.log("================");
+  console.log(g_memberAttArr);
+}
+
 // Drag OJBをFabric インスタンス化し配置する
 function AddInstance(im, txt, x, y, size, name_updatable, idx) {
   var dragInstance;
@@ -49,7 +98,7 @@ function AddInstance(im, txt, x, y, size, name_updatable, idx) {
 
 function drawPlayers() {
   var savedMemberList = JSON.parse(localStorage.getItem("member-list"));
-  if (!savedMemberList) savedMemberList = new Array(20).fill("");
+  if (!savedMemberList) savedMemberList = new Array(25).fill("");
 
   var field_padding = window.innerWidth / 10; // field_rect.height / 10; // 描画開始時のpadding
   var icon_num = 5;
@@ -89,6 +138,12 @@ function drawPlayers() {
       // g_gameNoArr[gameNo] にg_instance_arryの中身が入っている。
       if (JSON.parse(localStorage.getItem("playerArrayObj"))) {
         g_gameNoArr = JSON.parse(localStorage.getItem("playerArrayObj"));
+      }
+      // 常に8試合分のデータ保存ができるように保存さえていないものを初期化
+      for(var lll=0; lll<9; lll++ ) {
+        if(!g_gameNoArr[lll]) {
+          g_gameNoArr[lll]="";
+        }
       }
       var gameNo = $('input:radio[name="gameNo"]:checked').val();
 
@@ -160,6 +215,9 @@ function showMemberListForm() {
   var savedMemberList = JSON.parse(localStorage.getItem("member-list"));
   if (!savedMemberList) savedMemberList = new Array(20).fill("");
 
+  showPlayersAttendGameCount();
+
+  $("#member_list").html("");
   for (var counter = 1; counter <= 10; counter++) {
     var newTextBoxDiv = $(document.createElement("div")).attr(
       "id",
@@ -176,7 +234,7 @@ function showMemberListForm() {
           counter +
           '" value="' +
           savedMemberList[counter - 1] +
-          '" onblur="javascript:window.scrollTo(0, 0);" >'
+          '" onblur="javascript:window.scrollTo(0, 0);" > ' + g_memberAttArr[counter-1] + '試合'
       );
     //    cursorFocus(newTextBoxDiv.focus);
     newTextBoxDiv.appendTo("#member_list");
@@ -188,13 +246,15 @@ function showMemberListForm() {
 // ############# ここが最初に呼ばれる ############## //
 // g_instance.item(1).set({text:'hello'});
 var g_can, g_icon_size, g_instance;
-var g_instance_array = new Array(21); // 20 + 1 ２１はボールよう
+var g_instance_array = new Array(26); // 25 + 1 ２１はボールよう
 var g_member_array = new Array();
-var g_member_drawed = new Array(20).fill(false);
+var g_member_drawed = new Array(25).fill(false);
 var g_ball_drawed = false;
 var field_rect;
 //var g_gameNoArr = new Array(4);
-var g_gameNoArr = new Array(4 + 1).fill(""); // 初期化 ４試合分初期化
+var g_gameNoArr = new Array(8 + 1).fill(""); // 初期化 ４試合分初期化
+g_gameNoArr = new Array(9);
+g_gameNoArr.fill("");
 
 var g_targetOBJ;
 
@@ -225,12 +285,22 @@ $(document).ready(function () {
         var pname = g_instance_array[i].item(1).text;
         var top = g_instance_array[i].top;
         var left = g_instance_array[i].left;
-        console.log("i:" + i + " name:" + pname + "(" + top + "," + left + ")");
+
+        // 試合に出ているかどうかの判定。 コートの矩形の中にいるか。一旦top座標が特定の場所以下かだけ見る
+        var isPlaying = isPlayOrNot(g_instance_array[i]);
+        // g_instance_array[i].item(1).set({isPlay:isPlaying});
+        // g_instance_array[i].isPlay = isPlaying;
+        // g_can.renderAll();
+
+        console.log("i:" + i + " name:" + pname + "(" + top + "," + left + ") - plaing? "+isPlaying);
       }
       var gameNo = $('input:radio[name="gameNo"]:checked').val();
       console.log("試合番号:" + gameNo);
       g_gameNoArr[gameNo] = g_instance_array; // 今の状態を試合noに保存
+      console.log(g_gameNoArr);
       localStorage.setItem("playerArrayObj", JSON.stringify(g_gameNoArr));
+      showMemberListForm();
+
     }
   });
 
