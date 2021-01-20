@@ -43,7 +43,9 @@ body {
   bottom: 5px;
   background-color: rgb(232, 232, 232);
   display: none;
-  padding: 30px;
+  padding: 5px;
+  margin: 5px;
+  font-size: small;  
 }
 #menu-check {
   display: none;
