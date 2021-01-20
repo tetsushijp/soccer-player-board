@@ -218,7 +218,7 @@ function showMemberListForm() {
   showPlayersAttendGameCount();
 
   $("#member_list").html("");
-  for (var counter = 1; counter <= 10; counter++) {
+  for (var counter = 1; counter <= 18; counter++) {
     var newTextBoxDiv = $(document.createElement("div")).attr(
       "id",
       "TextBoxDiv" + counter
