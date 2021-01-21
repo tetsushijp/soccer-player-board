@@ -15,6 +15,11 @@
     <script src="./js/hammer.js"></script>
     <script src="./js/fabric_with_gestures.js"></script>
     <script src="./js/custom.js"></script>
+
+    
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="css/mdb.min.css">
   </head>
 
   <body ontouchmove="event.preventDefault()">
@@ -29,20 +34,20 @@
     >
     </canvas>
     <label for="menu-check" class="menu" >
-      <img src="img/setting.svg" width="30" height="30" />
+      <img src="img/setting.svg" width="20" height="20" />
     </label>
     <div class="setting-panel">
       <input type="checkbox" id="menu-check" class="menu" checked="checked" />
       <div class="setting">
-        <h1 class="setting-title">試合 v.1.21.1210</h1>
-        <input type="radio" name="gameNo" value="1" id="gno1" checked /><label for="gno1">1</label>
-        <input type="radio" name="gameNo" value="2" id="gno2" /><label for="gno2">2</label>
-        <input type="radio" name="gameNo" value="3" id="gno3" /><label for="gno3">3</label>
-        <input type="radio" name="gameNo" value="4" id="gno4" /><label for="gno4">4</label>
-        <input type="radio" name="gameNo" value="5" id="gno5" /><label for="gno5">5</label>
-        <input type="radio" name="gameNo" value="6" id="gno6" /><label for="gno6">6</label>
-        <input type="radio" name="gameNo" value="7" id="gno7" /><label for="gno7">7</label>
-        <input type="radio" name="gameNo" value="8" id="gno8" /><label for="gno8">8</label>
+        <h1 class="setting-title">スタメンボード - v121.01</h1><span> 試合</span>
+        <input class="radioB" type="radio" name="gameNo" value="1" id="gno1" checked /><label for="gno1">1</label>
+        <input class="radioB" type="radio" name="gameNo" value="2" id="gno2" /><label for="gno2">2</label>
+        <input class="radioB" type="radio" name="gameNo" value="3" id="gno3" /><label for="gno3">3</label>
+        <input class="radioB" type="radio" name="gameNo" value="4" id="gno4" /><label for="gno4">4</label>
+        <input class="radioB" type="radio" name="gameNo" value="5" id="gno5" /><label for="gno5">5</label>
+        <input class="radioB" type="radio" name="gameNo" value="6" id="gno6" /><label for="gno6">6</label>
+        <input class="radioB" type="radio" name="gameNo" value="7" id="gno7" /><label for="gno7">7</label>
+        <input class="radioB" type="radio" name="gameNo" value="8" id="gno8" /><label for="gno8">8</label>
 
         <div class="tabs">
           <button id="OK-btn" onclick="save();" >
@@ -52,10 +57,19 @@
           <div class="tab" id="member_list"></div>
         </div>
         <h1>debug</h1>
-        <a href="javascript:localStorage.removeItem('playerArrayObj')"
+        <a href="javascript:resetPosition()"
           >position reset</a
         >
       </div>
     </div>
+    <script>
+      function resetPosition() {
+        console.log("RESET position");
+        localStorage.removeItem('playerArrayObj');
+        g_member_drawed = new Array(20).fill(false);        
+        save();
+        window.location.reload();
+      }
+    </script>
   </body>
 </html>

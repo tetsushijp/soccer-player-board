@@ -223,14 +223,9 @@ function showMemberListForm() {
 
   $("#member_list").html("");
   for (var counter = 1; counter <= 18; counter++) {
-    var newTextBoxDiv = $(document.createElement("div")).attr(
-      "id",
-      "TextBoxDiv" + counter
-    );
+    var newTextBoxDiv = $(document.createElement("div")).attr("id","TextBoxDiv" + counter);
 
-    newTextBoxDiv
-      .after()
-      .html(
+    newTextBoxDiv.after().html(
         ("00" + counter).slice(-2) +
           '.<input type="text" class="player-name" name="textbox' +
           counter +

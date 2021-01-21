@@ -8,6 +8,9 @@ body {
   -webkit-user-select: none; /* Chrome, Safari, and Opera */
   -webkit-touch-callout: none; /* Disable Android and iOS callouts*/  
 }
+.radioB {
+  margin-right: 2px;
+}
 /* Safari用のハックは、Chromeに適用されないようにする */
 @supports (-webkit-touch-callout: none) {
   body {
@@ -47,11 +50,19 @@ body {
   left: 5px;
   right: 5px;
   bottom: 5px;
-  background-color: rgb(232, 232, 232);
+  background-color: #5BDE80; /*rgb(232, 232, 232);*/
+  color: #435E4B;
   display: none;
   padding: 5px;
   margin: 5px;
   font-size: small;  
+
+  font-weight: 400;
+  border: 0;
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+
+
 }
 #menu-check {
   display: none;
@@ -76,9 +87,10 @@ h1 {
 #OK-btn {
   position: absolute;
   -webkit-appearance: none;
-  top: 10px;
-  right: 10px;
-  padding: 8px 50px;
+  top: 5px;
+  right: 5px;
+  padding: 5px 10px;
+  background: white;
 }
 
 .setting h1 {
