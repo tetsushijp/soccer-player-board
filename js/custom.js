@@ -76,7 +76,7 @@ function AddInstance(im, txt, x, y, size, name_updatable, idx) {
       br: false,
       tl: false,
       tr: false,
-      mtr: true,
+      mtr: false, // 回転させる四角を消す。
     });
     dragInstance.hasBorders = false;
     dragInstance.cornerSize = 25;
@@ -86,6 +86,7 @@ function AddInstance(im, txt, x, y, size, name_updatable, idx) {
     dragInstance.imageSmoothingEnabled = true;
     //    g_can.add(img).setActiveObject(img);
     dragInstance.lockUniScaling = true; // ピンチでresizeをさせない。
+    //dragInstance.setControlVisible('mt', false); // 回転させる四角を消す。
     g_can.add(dragInstance); // グローバル変数のキャンバスに配置する
     g_can.renderAll();
     g_instance = dragInstance; // just for debug
