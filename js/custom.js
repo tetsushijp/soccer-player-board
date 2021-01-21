@@ -57,6 +57,7 @@ function AddInstance(im, txt, x, y, size, name_updatable, idx) {
     var text = new fabric.Text(txt, {
       fontSize: g_icon_size / 3,
       originX: 100,
+      fontFamily:'Noto Sans JP'
     });
     text.set({ fill: "#fff" });
     //  var circle = new fabric.Circle({radius:100, fill:"#eef",scaleY:1.1})
