@@ -85,6 +85,7 @@ function AddInstance(im, txt, x, y, size, name_updatable, idx) {
     dragInstance.enableRetinaScaling = true;
     dragInstance.imageSmoothingEnabled = true;
     //    g_can.add(img).setActiveObject(img);
+    dragInstance.lockUniScaling = true; // ピンチでresizeをさせない。
     g_can.add(dragInstance); // グローバル変数のキャンバスに配置する
     g_can.renderAll();
     g_instance = dragInstance; // just for debug
@@ -269,6 +270,8 @@ $(document).ready(function () {
   $("#c").get(0).height = window.innerHeight; //field_rect.height; // 700;//$(window).height()-30;
 
   g_can = new fabric.Canvas("c");
+  g_can.selection = false; // disable group selection
+
   var zidx = 100;
   g_can.on("mouse:over", function (e) {
     e.target.moveTo(zidx++);
