@@ -86,7 +86,7 @@ function AddInstance(im, txt, x, y, size, name_updatable, idx) {
     dragInstance.imageSmoothingEnabled = true;
     //    g_can.add(img).setActiveObject(img);
     dragInstance.lockUniScaling = true; // ピンチでresizeをさせない。
-    //dragInstance.setControlVisible('mt', false); // 回転させる四角を消す。
+    dragInstance.setControlVisible('mt', false); // 回転させる四角を消す。
     g_can.add(dragInstance); // グローバル変数のキャンバスに配置する
     g_can.renderAll();
     g_instance = dragInstance; // just for debug
