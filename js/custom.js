@@ -102,10 +102,10 @@ function drawPlayers() {
   var savedMemberList = JSON.parse(localStorage.getItem("member-list"));
   if (!savedMemberList) savedMemberList = new Array(25).fill("");
 
-  var field_padding = window.innerWidth / 10; // field_rect.height / 10; // 描画開始時のpadding
-  var icon_num = 5;
+  var field_padding = window.innerHeight / 10; // field_rect.height / 10; // 描画開始時のpadding
+  var icon_num = 8;
   var icon_sz = Math.floor(
-    (window.innerWidth - field_padding * 2) / (icon_num + 1)
+    (window.innerHeight - field_padding * 2) / (icon_num + 1)
   ); //サッカー場の横幅に10人並ぶぐらいの大きさ
   g_icon_size = icon_sz;
   // console.log("SSS -- Icon Size (x,y):" + icon_sz);
