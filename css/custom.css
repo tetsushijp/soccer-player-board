@@ -1,6 +1,7 @@
 body {
   -webkit-text-size-adjust: 100%;
   height: 100vh;
+  font-family: 'Noto Sans JP', sans-serif;
 }
 /* Safari用のハックは、Chromeに適用されないようにする */
 @supports (-webkit-touch-callout: none) {
