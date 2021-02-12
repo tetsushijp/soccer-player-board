@@ -32,7 +32,7 @@ function showPlayersAttendGameCount() {
 
   g_memberAttArr.fill(0);
   for(var gameNo=1; gameNo<=8; gameNo ++ ) {
-    for(var playerNo=0; playerNo<10; playerNo++) {
+    for(var playerNo=0; playerNo<18; playerNo++) {
       if (g_gameNoArr[gameNo] && g_gameNoArr[gameNo][playerNo] ) {
         //console.log("player TOP:"+ g_gameNoArr[gameNo][playerNo].top );
         console.log(gameNo+","+playerNo+" isPlay:"+isPlayOrNot(g_gameNoArr[gameNo][playerNo]));
