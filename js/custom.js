@@ -215,6 +215,7 @@ function copy() {
   console.log(" =========== CPY BTN =========== Copy from "+copyFromGameNo+" to "+copyToGameNo+" ");
   g_gameNoArr[ copyToGameNo ] = g_gameNoArr[ copyFromGameNo ];
   localStorage.setItem("playerArrayObj", JSON.stringify(g_gameNoArr));
+  alert("コピーしました");
 }
 
 var cursorFocus = function (elem) {

@@ -10,6 +10,7 @@ body {
 }
 .radioB {
   margin-right: 2px;
+  margin: 4px;
 }
 /* Safari用のハックは、Chromeに適用されないようにする */
 @supports (-webkit-touch-callout: none) {
