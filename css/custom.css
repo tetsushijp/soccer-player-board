@@ -113,3 +113,11 @@ input[type="submit"]::focus,
 input[type="button"]::focus {
   outline-offset: -2px;
 }
+
+.copySelect {
+  padding: 4px;
+}
+
+.games{
+  padding: 4px;
+}

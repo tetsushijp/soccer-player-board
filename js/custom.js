@@ -35,7 +35,7 @@ function showPlayersAttendGameCount() {
     for(var playerNo=0; playerNo<18; playerNo++) {
       if (g_gameNoArr[gameNo] && g_gameNoArr[gameNo][playerNo] ) {
         //console.log("player TOP:"+ g_gameNoArr[gameNo][playerNo].top );
-        console.log(gameNo+","+playerNo+" isPlay:"+isPlayOrNot(g_gameNoArr[gameNo][playerNo]));
+        //console.log(gameNo+","+playerNo+" isPlay:"+isPlayOrNot(g_gameNoArr[gameNo][playerNo]));
         if( isPlayOrNot(g_gameNoArr[gameNo][playerNo]) ) {
           g_memberAttArr[playerNo] = g_memberAttArr[playerNo] + 1;
 
@@ -43,8 +43,8 @@ function showPlayersAttendGameCount() {
       }    
     }
   }
-  console.log("================");
-  console.log(g_memberAttArr);
+  //console.log("================");
+  console.log(g_memberAttArr); // 試合に出ている数を集計
 }
 
 // Drag OJBをFabric インスタンス化し配置する
@@ -55,7 +55,7 @@ function AddInstance(im, txt, x, y, size, name_updatable, idx) {
     img.scale(1).set({ width: size, height: size, originX: 100, angle: 0 });
     // text追加
     var text = new fabric.Text(txt, {
-      fontSize: g_icon_size / 3,
+      fontSize: g_icon_size / 4,
       originX: 100,
       fontFamily:'Noto Sans JP'
     });
@@ -208,6 +208,15 @@ function save() {
   // playerの名前などを上書き
   drawPlayers();
 }
+
+function copy() {
+  var copyToGameNo = document.getElementById("copySelect").value;
+  var copyFromGameNo = $('input:radio[name="gameNo"]:checked').val();
+  console.log(" =========== CPY BTN =========== Copy from "+copyFromGameNo+" to "+copyToGameNo+" ");
+  g_gameNoArr[ copyToGameNo ] = g_gameNoArr[ copyFromGameNo ];
+  localStorage.setItem("playerArrayObj", JSON.stringify(g_gameNoArr));
+}
+
 var cursorFocus = function (elem) {
   var x = window.scrollX,
     y = window.scrollY;
@@ -277,8 +286,8 @@ $(document).ready(function () {
   g_can.on("mouse:up", function (e) {
     //ここでプレーヤの位置を保存
     if (e.target) {
-      console.log("mouse up:" + e.target);
-      console.log(e.target);
+      //console.log("mouse up:" + e.target);
+      //console.log(e.target);
       g_targetOBJ = e.target;
 
       //
@@ -293,7 +302,7 @@ $(document).ready(function () {
         // g_instance_array[i].isPlay = isPlaying;
         // g_can.renderAll();
 
-        console.log("i:" + i + " name:" + pname + "(" + top + "," + left + ") - plaing? "+isPlaying);
+        //console.log("i:" + i + " name:" + pname + "(" + top + "," + left + ") - plaing? "+isPlaying);
       }
       var gameNo = $('input:radio[name="gameNo"]:checked').val();
       console.log("試合番号:" + gameNo);

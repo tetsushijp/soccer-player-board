@@ -39,20 +39,32 @@
     <div class="setting-panel">
       <input type="checkbox" id="menu-check" class="menu" checked="checked" />
       <div class="setting">
-        <h1 class="setting-title">スタメンボード - v0212.01</h1><span> 試合</span>
-        <input class="radioB" type="radio" name="gameNo" value="1" id="gno1" checked /><label for="gno1">1</label>
-        <input class="radioB" type="radio" name="gameNo" value="2" id="gno2" /><label for="gno2">2</label>
-        <input class="radioB" type="radio" name="gameNo" value="3" id="gno3" /><label for="gno3">3</label>
-        <input class="radioB" type="radio" name="gameNo" value="4" id="gno4" /><label for="gno4">4</label>
-        <input class="radioB" type="radio" name="gameNo" value="5" id="gno5" /><label for="gno5">5</label>
-        <input class="radioB" type="radio" name="gameNo" value="6" id="gno6" /><label for="gno6">6</label>
-        <input class="radioB" type="radio" name="gameNo" value="7" id="gno7" /><label for="gno7">7</label>
-        <input class="radioB" type="radio" name="gameNo" value="8" id="gno8" /><label for="gno8">8</label>
+        <h1 class="setting-title">スタメンボード - v0521.01</h1>
+        <div class="games">
+          <span> 試合</span>
+          <input class="radioB" type="radio" name="gameNo" value="1" id="gno1" checked /><label for="gno1">1</label>
+          <input class="radioB" type="radio" name="gameNo" value="2" id="gno2" /><label for="gno2">2</label>
+          <input class="radioB" type="radio" name="gameNo" value="3" id="gno3" /><label for="gno3">3</label>
+          <input class="radioB" type="radio" name="gameNo" value="4" id="gno4" /><label for="gno4">4</label>
+          <input class="radioB" type="radio" name="gameNo" value="5" id="gno5" /><label for="gno5">5</label>
+          <input class="radioB" type="radio" name="gameNo" value="6" id="gno6" /><label for="gno6">6</label>
+          <input class="radioB" type="radio" name="gameNo" value="7" id="gno7" /><label for="gno7">7</label>
+          <input class="radioB" type="radio" name="gameNo" value="8" id="gno8" /><label for="gno8">8</label>  
+        </div>
 
         <div class="tabs">
           <button id="OK-btn" onclick="save();" >
             OK
           </button>
+          <div>
+            <select class="copySelect" id="copySelect" >
+              <option>1</option><option>2</option><option>3</option><option>4</option>
+              <option>5</option><option>6</option><option>7</option><option>8</option>
+            </select>
+            試合目に
+            <button id="Copy-btn" onclick="copy()">コピー</button>
+          </div>
+          <p></p>
           <h1>メンバーリスト</h1>
           <div class="tab" id="member_list"></div>
         </div>
