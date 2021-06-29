@@ -1,1 +1,2 @@
-# test1
+# test1は、サッカーボードのgithub pagesです。
+
