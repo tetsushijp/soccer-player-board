@@ -9,6 +9,9 @@
 // 試合に出ているかどうかの判定マトリクス
 // 
 
+// playerの最大数
+var playerMax = 20;
+
 // 試合に出ているかの判定
 function isPlayOrNot(plyr) {
   var baseFieldH = 874;
@@ -32,7 +35,7 @@ function showPlayersAttendGameCount() {
 
   g_memberAttArr.fill(0);
   for(var gameNo=1; gameNo<=8; gameNo ++ ) {
-    for(var playerNo=0; playerNo<18; playerNo++) {
+    for(var playerNo=0; playerNo<playerMax; playerNo++) {
       if (g_gameNoArr[gameNo] && g_gameNoArr[gameNo][playerNo] ) {
         //console.log("player TOP:"+ g_gameNoArr[gameNo][playerNo].top );
         //console.log(gameNo+","+playerNo+" isPlay:"+isPlayOrNot(g_gameNoArr[gameNo][playerNo]));
@@ -232,18 +235,18 @@ function showMemberListForm() {
   showPlayersAttendGameCount();
 
   $("#member_list").html("");
-  for (var counter = 1; counter <= 18; counter++) {
+  for (var counter = 1; counter <= playerMax; counter++) {
     var newTextBoxDiv = $(document.createElement("div")).attr("id","TextBoxDiv" + counter);
 
     newTextBoxDiv.after().html(
-        ("00" + counter).slice(-2) +
-          '.<input type="text" class="player-name" name="textbox' +
+        (" 00" + counter).slice(-2) +
+          '.<input size="10" type="text" class="player-name" name="textbox' +
           counter +
           '" id="textbox' +
           counter +
           '" value="' +
           savedMemberList[counter - 1] +
-          '" onblur="javascript:window.scrollTo(0, 0);" > ' + g_memberAttArr[counter-1] + '試合'
+          '" onblur="javascript:window.scrollTo(0, 0);" > ' + g_memberAttArr[counter-1] + ' ,　'
       );
     //    cursorFocus(newTextBoxDiv.focus);
     newTextBoxDiv.appendTo("#member_list");

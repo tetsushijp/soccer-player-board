@@ -122,3 +122,8 @@ input[type="button"]::focus {
 .games{
   padding: 4px;
 }
+
+#member_list {
+  display: flex;
+  flex-wrap: wrap;
+}
