@@ -10,7 +10,7 @@
 // 
 
 // playerの最大数
-var playerMax = 20;
+var playerMax = 24;
 
 // 試合に出ているかの判定
 function isPlayOrNot(plyr) {
